@@ -1,11 +1,32 @@
 using namespace System.Management.Automation
 using namespace System.Management.Automation.Language
 
+$git_repos_path = "~\Codes"
+
+# vscode
+if (!(Get-Command code -ErrorAction SilentlyContinue)) {
+    $code_insiders = Get-Command code-insiders -ErrorAction SilentlyContinue
+    if ($code_insiders) {
+        Set-Alias -Name code -Value $code_insiders.Source
+    }
+}
+
 # vcpkg
-Set-Alias -Name vcpkg -Value C:\Users\LucyB\Codes\vcpkg\vcpkg.exe
+
+$vcpkg_path = "$git_repos_path\vcpkg"
+if (Test-Path $vcpkg_path) {
+    Set-Alias -Name vcpkg -Value "$vcpkg_path\vcpkg.exe"
+    Import-Module "$vcpkg_path\scripts\posh-vcpkg"
+} else {
+    Write-Error "vcpkg not found."
+}
 
 # starship
-Invoke-Expression (&starship init powershell)
+if (Get-Command starship -ErrorAction SilentlyContinue) {
+    Invoke-Expression (&starship init powershell)
+} else {
+    Write-Error "Starship not found."  
+}
 
 # winget
 Register-ArgumentCompleter -Native -CommandName winget -ScriptBlock {
@@ -697,5 +718,3 @@ Set-PSReadLineKeyHandler -Key Alt+a `
 #Set-PSReadlineKeyHandler -Key Tab -Function Complete
 #Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 #Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
-
-Import-Module 'C:\Users\LucyB\Codes\vcpkg\scripts\posh-vcpkg'
