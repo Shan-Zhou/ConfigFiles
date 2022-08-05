@@ -3,8 +3,20 @@ using namespace System.Management.Automation.Language
 
 $git_repos_path = "~\Codes"
 
+# Add Alias
+function add_file_alias
+{
+    param([string]$alias_name, [string]$file_path)
+    $alias_undefined = !(Get-Command $alias_name -ErrorAction SilentlyContinue)
+    $file_existed = Test-Path $file_path
+    Write-Host "??? $alias_name $alias_undefined $file_existed"
+    if ($alias_undefined -and $file_existed) {
+        Set-Alias -Name $alias_name -Value $file_path
+    }
+}
+
 # vscode
-if (!(Get-Command code -ErrorAction SilentlyContinue)) {
+if (!(Get-Command "code" -ErrorAction SilentlyContinue)) {
     $code_insiders = Get-Command code-insiders -ErrorAction SilentlyContinue
     if ($code_insiders) {
         Set-Alias -Name code -Value $code_insiders.Source
