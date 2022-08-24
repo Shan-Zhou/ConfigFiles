@@ -1,6 +1,9 @@
 using namespace System.Management.Automation
 using namespace System.Management.Automation.Language
 
+# ripgrep
+. ~\scoop\apps\ripgrep\current\complete\_rg.ps1
+
 $git_repos_path = "~\Codes"
 
 # Add Alias
