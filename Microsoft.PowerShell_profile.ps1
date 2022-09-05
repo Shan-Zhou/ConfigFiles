@@ -620,7 +620,7 @@ Set-PSReadLineKeyHandler -Key Ctrl+j `
     $dir = $global:PSReadLineMarks[$key.KeyChar]
     if ($dir)
     {
-        cd $dir
+        Set-Location $dir
         [Microsoft.PowerShell.PSConsoleReadLine]::InvokePrompt()
     }
 }
@@ -631,7 +631,7 @@ Set-PSReadLineKeyHandler -Key Alt+j `
                          -ScriptBlock {
     param($key, $arg)
 
-    $global:PSReadLineMarks.GetEnumerator() | % {
+    $global:PSReadLineMarks.GetEnumerator() | ForEach-Object {
         [PSCustomObject]@{Key = $_.Key; Dir = $_.Value} } |
         Format-Table -AutoSize | Out-Host
 
