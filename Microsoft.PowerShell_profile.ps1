@@ -1,6 +1,9 @@
 using namespace System.Management.Automation
 using namespace System.Management.Automation.Language
 
+# 不然可能会乱码
+[Console]::InputEncoding = [Console]::OutputEncoding = [System.Text.Utf8Encoding]::new()
+
 # ripgrep
 . ~\scoop\apps\ripgrep\current\complete\_rg.ps1
 
