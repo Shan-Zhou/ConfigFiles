@@ -729,7 +729,7 @@ Set-PSReadLineKeyHandler -Key Alt+a `
     [Microsoft.PowerShell.PSConsoleReadLine]::SelectForwardChar($null, ($nextAst.Extent.EndOffset - $nextAst.Extent.StartOffset) - $endOffsetAdjustment)
 }
 
-Set-PSReadLineOption -PredictionSource History
+#Set-PSReadLineOption -PredictionSource HistoryAndPlugin # Enabled by default since PSReadLine 2.2.6
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
