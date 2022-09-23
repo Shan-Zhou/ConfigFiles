@@ -1,13 +1,34 @@
 using namespace System.Management.Automation
 using namespace System.Management.Automation.Language
 
+function Enter-MiniConda3
+{
+    Write-Output '==== MiniConda3 Environment Begin ===='
+    pwsh -ExecutionPolicy ByPass -NoExit -Command @"
+    & '$HOME\miniconda3\shell\condabin\conda-hook.ps1' ; 
+    conda activate '$HOME\miniconda3' ;
+    `$Host.UI.RawUI.WindowTitle = 'MiniConda3'
+"@
+    Write-Output '==== MiniConda3 Environment End ===='
+}
+function Enter-VS2022Env
+{
+    Write-Output '==== VS2022 Environment Begin ===='
+    pwsh -NoExit -Command "& {
+        Import-Module 'C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\Tools\Microsoft.VisualStudio.DevShell.dll';
+        Enter-VsDevShell 7ab1276f -SkipAutomaticLocation -DevCmdArguments '-arch=x64 -host_arch=x64';
+        `$Host.UI.RawUI.WindowTitle = 'Dev Pwsh for VS2022'
+    }"
+    Write-Output '==== VS2022 Environment End ===='
+}
+
 # 不然可能会乱码
 [Console]::InputEncoding = [Console]::OutputEncoding = [System.Text.Utf8Encoding]::new()
 
 # ripgrep
-. ~\scoop\apps\ripgrep\current\complete\_rg.ps1
+. $HOME\scoop\apps\ripgrep\current\complete\_rg.ps1
 
-$git_repos_path = "~\Codes"
+$git_repos_path = "$HOME\Codes"
 
 # Add Alias
 function add_file_alias
