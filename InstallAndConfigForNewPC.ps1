@@ -3,9 +3,12 @@ winget install Microsoft.WindowsTerminal.Preview
 winget install Starship.Starship
 winget install Microsoft.VisualStudioCode
 winget install gerardog.gsudo
+winget install OpenJS.NodeJS
 
 mkdir $HOME\Codes
 git clone https://github.com/microsoft/vcpkg $HOME\Codes\vcpkg
+. $HOME\Codes\vcpkg\bootstrap-vcpkg.bat
+vcpkg integrate powershell
 
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser # Optional: Needed to run a remote script the first time
 Invoke-RestMethod get.scoop.sh | Invoke-Expression
