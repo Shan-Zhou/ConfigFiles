@@ -4,8 +4,18 @@ winget install Starship.Starship
 winget install Microsoft.VisualStudioCode
 winget install gerardog.gsudo
 winget install OpenJS.NodeJS
+winget install sysinternals
 
 mkdir $HOME\Codes
+
+#ffmpeg
+{
+    $ffmpeg_latest_build_url = 'https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl-shared.zip'
+    Invoke-WebRequest $ffmpeg_latest_build_url -OutFile 'ffmpeg.zip'
+    Expand-Archive 'ffmpeg.zip' -DestinationPath "$HOME\Codes"
+    Remove-Item 'ffmpeg.zip'
+}
+
 git clone https://github.com/microsoft/vcpkg $HOME\Codes\vcpkg
 . $HOME\Codes\vcpkg\bootstrap-vcpkg.bat
 vcpkg integrate powershell
@@ -25,9 +35,12 @@ Write-Output "Please check Font Settings. If new fonts are missing, try to insta
 
 
 $ConfigFilePath = (Get-Location).Path
+$PROFILE_VSCODE = ($PROFILE -replace '(.*)PowerShell(_profile.ps1)','$1VSCode$2')
 
 Move-Item $PROFILE pwsh_profile_backup.ps1
 New-Item -Force -ItemType HardLink -Path $PROFILE -Value "$ConfigFilePath\Microsoft.PowerShell_profile.ps1"
+New-Item -Force -ItemType HardLink -Path $PROFILE_VSCODE -Value $PROFILE
+
 
 $TerminalPreviewSettingPath = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe\LocalState\settings.json"
 Move-Item $TerminalPreviewSettingPath windows_terminal_prevew_backup.ps1

@@ -29,6 +29,7 @@ function Enter-VS2022Env
 . $HOME\scoop\apps\ripgrep\current\complete\_rg.ps1
 
 $git_repos_path = "$HOME\Codes"
+$ffmpeg_latest = "$git_repos_path\ffmpeg-master-latest-win64-gpl-shared\bin\ffmpeg.exe"
 
 # Add Alias
 function add_file_alias
