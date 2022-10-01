@@ -34,6 +34,7 @@ scoop install LXGWWenKaiScreen
 Write-Output "Please check Font Settings. If new fonts are missing, try to install (one of) them manually to refresh the cache"
 
 # TODO: install Source Han Serif font
+# font for Telegram Desktop
 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\FontSubstitutes" -Name "DAOpenSansRegular" -Value "Source Han Serif SC VF"  -PropertyType "String"
 
 $ConfigFilePath = (Get-Location).Path
