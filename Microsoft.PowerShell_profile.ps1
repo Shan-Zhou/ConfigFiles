@@ -1,15 +1,19 @@
 using namespace System.Management.Automation
 using namespace System.Management.Automation.Language
 
+$OutputEncoding = [Console]::InputEncoding = [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+
+# Agent 环境下立即返回，跳过全量 Profile 初始化
+if ($env:ANTIGRAVITY_AGENT) {
+    return
+}
+
 $sw = [System.Diagnostics.Stopwatch]::StartNew()
 function Trace-Time ($msg) { 
     Write-Host "$($sw.ElapsedMilliseconds)ms - $msg" -ForegroundColor Cyan 
 }
 
 Trace-Time "🐐 Loading..."
-
-# 不然可能会乱码
-$OutputEncoding = [Console]::InputEncoding = [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 Trace-Time "encoding"
 
 # ripgrep
@@ -235,6 +239,8 @@ Set-PSReadLineKeyHandler -Key Alt+f -Function ShellForwardWord
 Set-PSReadLineKeyHandler -Key Alt+B -Function SelectShellBackwardWord
 Set-PSReadLineKeyHandler -Key Alt+F -Function SelectShellForwardWord
 
+# 仅在非 VS Code 终端（如独立 Windows Terminal / Console）中启用智能配对引号/括号，避免干扰 VS Code 及 Agent 字符流输入
+if ($env:TERM_PROGRAM -ne 'vscode') {
 #region Smart Insert/Delete
 
 # The next four key handlers are designed to make entering matched quotes
@@ -419,6 +425,7 @@ Set-PSReadLineKeyHandler -Key Backspace `
 }
 
 #endregion Smart Insert/Delete
+}
 
 # Sometimes you enter a command but realize you forgot to do something else first.
 # This binding will let you save that command in the history so you can recall it,
